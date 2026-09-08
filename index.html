@@ -1018,19 +1018,35 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 
   var aseretBtn=document.getElementById('aseret-toggle');
-  function applyAseret(on){
+  function isAseretNow(){
+    try{
+      var parts=new Intl.DateTimeFormat('en-u-ca-hebrew',{month:'long',day:'numeric'}).formatToParts(new Date());
+      var month='', day=0;
+      for(var i=0;i<parts.length;i++){
+        if(parts[i].type==='month') month=parts[i].value;
+        if(parts[i].type==='day') day=parseInt(parts[i].value,10)||0;
+      }
+      return /^Tishri$/i.test(month) && day>=1 && day<=10;
+    }catch(e){ return false; }
+  }
+  function applyAseret(on, opts){
+    opts=opts||{};
     if(on){ document.body.classList.add('show-aseret'); if(aseretBtn){ aseretBtn.classList.add('active'); aseretBtn.setAttribute('aria-pressed','true'); } }
     else { document.body.classList.remove('show-aseret'); if(aseretBtn){ aseretBtn.classList.remove('active'); aseretBtn.setAttribute('aria-pressed','false'); } }
-    try{ localStorage.setItem('selichot-aseret', on?'1':'0'); }catch(e){}
+    if(opts.manual){
+      try{ localStorage.setItem('selichot-aseret-manual', on?'1':'0'); }catch(e){}
+    }
   }
-  var aseretSaved=null;
-  try{ aseretSaved=localStorage.getItem('selichot-aseret'); }catch(e){}
-  // default OFF (Elul / weekday); ON only if saved
-  applyAseret(aseretSaved==='1');
+  var aseretManual=null;
+  try{ aseretManual=localStorage.getItem('selichot-aseret-manual'); }catch(e){}
+  // Auto-on for 1–10 Tishrei; manual toggle overrides and sticks
+  var aseretOn=(aseretManual==='1'||aseretManual==='0') ? aseretManual==='1' : isAseretNow();
+  applyAseret(aseretOn);
   if(aseretBtn){
+    aseretBtn.title='Auto-on during Aseret Yemei Teshuvah (1–10 Tishrei). Tap to override.';
     aseretBtn.addEventListener('click', function(e){
       e.preventDefault();
-      applyAseret(!document.body.classList.contains('show-aseret'));
+      applyAseret(!document.body.classList.contains('show-aseret'), {manual:true});
     });
   }
 
