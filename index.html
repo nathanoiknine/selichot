@@ -121,8 +121,33 @@ body.show-aseret .intro{margin-top:12px}
 .toc-he{grid-column:2;font-family:"Times New Roman","Arial Hebrew",serif;font-size:14pt;direction:rtl;text-align:right;color:var(--charcoal);line-height:1.25}
 .toc-en{grid-column:2;font-size:10pt;color:var(--warm-gray);letter-spacing:.04em;margin-top:2px}
 .divider{scroll-margin-top:calc(env(safe-area-inset-top, 8px) + 110px)}
-@media print{.toc-panel,#toc-toggle{display:none !important}}
+@media print{.toc-panel,#toc-toggle,.contact-panel,#contact-toggle{display:none !important}}
 /* /TOC */
+
+/* Contact */
+.foot{flex-wrap:wrap;gap:10px 18px}
+.foot-link{background:none;border:none;padding:0;font:inherit;font-size:8pt;letter-spacing:.06em;color:var(--clay);cursor:pointer;text-decoration:underline;text-underline-offset:3px;-webkit-tap-highlight-color:transparent}
+.foot-link:hover{color:var(--charcoal)}
+.dedication{margin:0 16px 28px;padding:0 8px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:11pt;font-style:italic;font-weight:300;line-height:1.45;color:var(--warm-gray)}
+body.hide-en .dedication{display:none}
+@media print{body.hide-en .dedication{display:unset !important}}
+.contact-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
+.contact-panel[hidden]{display:none !important}
+.contact-panel-inner{width:100%;max-width:420px;max-height:min(78vh,640px);overflow:auto;background:var(--parchment);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid var(--rule)}
+.contact-form{padding:8px 16px 20px;display:flex;flex-direction:column;gap:12px}
+.contact-lead{font-family:'Cormorant Garamond',serif;font-size:12pt;font-style:italic;font-weight:300;line-height:1.45;color:var(--graphite);margin:0 0 4px}
+.contact-form label{display:flex;flex-direction:column;gap:6px;font-size:10pt;letter-spacing:.04em;color:var(--warm-gray);text-transform:uppercase}
+.contact-form input,.contact-form textarea{font-family:'Inter',system-ui,sans-serif;font-size:15px;font-weight:400;color:var(--charcoal);background:var(--parchment);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;width:100%;-webkit-appearance:none}
+.contact-form textarea{min-height:140px;resize:vertical;line-height:1.45;text-transform:none;letter-spacing:0;font-size:15px}
+.contact-form input:focus,.contact-form textarea:focus{outline:2px solid var(--clay);outline-offset:1px;border-color:var(--clay)}
+.contact-hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
+.contact-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:4px}
+.contact-submit{font-family:'Inter',system-ui,sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 18px;border-radius:20px;border:1px solid var(--charcoal);background:var(--charcoal);color:var(--parchment);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.contact-submit:disabled{opacity:.55;cursor:wait}
+.contact-status{font-family:'Cormorant Garamond',serif;font-size:12pt;font-style:italic;color:var(--graphite);min-height:1.2em;margin:0;flex:1;text-align:left}
+.contact-status.err{color:#8B3A2A}
+.contact-status.ok{color:#3D5A3D}
+/* /Contact */
 
 </style>
 </head>
@@ -945,7 +970,11 @@ the Thirteen Attributes of Compassion, the merit of the Patriarchs, and heartfel
 May our prayers ascend before the Throne of Glory, and may we be inscribed and sealed in the Book of Life.
 </div>
 </div>
-<div class="foot">Seder HaSelichot &middot; Sephardic Rite</div>
+<div class="foot">
+<span>Seder HaSelichot &middot; Sephardic Rite</span>
+<button type="button" class="foot-link" id="contact-open">Contact · Feedback</button>
+</div>
+<p class="dedication">Created by Nathan Oiknine in honor of Sofia bat Natalia</p>
 </div>
 
 
@@ -992,6 +1021,34 @@ May our prayers ascend before the Throne of Glory, and may we be inscribed and s
 </div>
 </div>
 <!-- /TOC -->
+
+<!-- Contact -->
+<div id="contact-panel" class="contact-panel" hidden>
+<div class="contact-panel-inner">
+<div class="toc-head"><span class="toc-title">Contact · צור קשר</span><button type="button" class="toc-close" id="contact-close" aria-label="Close">×</button></div>
+<form class="contact-form" id="contact-form" novalidate>
+<p class="contact-lead">Feature requests, nusaḥ notes, typos, or ideas for the pamphlet — send a note. Your message goes to the editor; no email address is shown on this page.</p>
+<label>Name <span style="text-transform:none;letter-spacing:0;opacity:.7">(optional)</span>
+<input type="text" name="name" autocomplete="name" maxlength="120" placeholder="Your name">
+</label>
+<label>Reply email <span style="text-transform:none;letter-spacing:0;opacity:.7">(optional)</span>
+<input type="email" name="email" autocomplete="email" maxlength="200" placeholder="If you want a reply">
+</label>
+<label>Message
+<textarea name="message" required maxlength="5000" placeholder="What would you like to see?"></textarea>
+</label>
+<input type="checkbox" name="botcheck" class="contact-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="subject" value="Selichot.app feedback">
+<input type="hidden" name="from_name" value="selichot.app">
+<div class="contact-actions">
+<p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+<button type="submit" class="contact-submit" id="contact-submit">Send</button>
+</div>
+</form>
+</div>
+</div>
+<!-- /Contact -->
+
 <button class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
@@ -1074,6 +1131,56 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeToc(); });
 /* /TOC JS */
+
+/* Contact JS */
+  // Web3Forms access key (public by design; routes to inbox without listing an email on the page)
+  var CONTACT_ACCESS_KEY = 'CONTACT_ACCESS_KEY_PLACEHOLDER';
+  var contactPanel=document.getElementById('contact-panel');
+  var contactOpen=document.getElementById('contact-open');
+  var contactClose=document.getElementById('contact-close');
+  var contactForm=document.getElementById('contact-form');
+  var contactStatus=document.getElementById('contact-status');
+  var contactSubmit=document.getElementById('contact-submit');
+  function openContact(){ if(!contactPanel) return; contactPanel.hidden=false; document.body.style.overflow='hidden'; var ta=contactForm && contactForm.querySelector('textarea'); if(ta) setTimeout(function(){ta.focus();},50); }
+  function closeContact(){ if(!contactPanel) return; contactPanel.hidden=true; if(tocPanel && tocPanel.hidden) document.body.style.overflow=''; }
+  if(contactOpen) contactOpen.addEventListener('click', function(e){ e.preventDefault(); openContact(); });
+  if(contactClose) contactClose.addEventListener('click', function(e){ e.preventDefault(); closeContact(); });
+  if(contactPanel){
+    contactPanel.addEventListener('click', function(e){ if(e.target===contactPanel) closeContact(); });
+  }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && contactPanel && !contactPanel.hidden) closeContact(); });
+  if(contactForm){
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!CONTACT_ACCESS_KEY || CONTACT_ACCESS_KEY.indexOf('PLACEHOLDER')>=0){
+        if(contactStatus){ contactStatus.className='contact-status err'; contactStatus.textContent='Contact form is not connected yet.'; }
+        return;
+      }
+      var fd=new FormData(contactForm);
+      var msg=(fd.get('message')||'').toString().trim();
+      if(!msg){ if(contactStatus){ contactStatus.className='contact-status err'; contactStatus.textContent='Please write a message.'; } return; }
+      if(fd.get('botcheck')){ return; }
+      fd.append('access_key', CONTACT_ACCESS_KEY);
+      if(contactSubmit) contactSubmit.disabled=true;
+      if(contactStatus){ contactStatus.className='contact-status'; contactStatus.textContent='Sending…'; }
+      fetch('https://api.web3forms.com/submit', {method:'POST', body:fd})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+        .then(function(res){
+          if(res.ok && res.j && res.j.success){
+            contactForm.reset();
+            if(contactStatus){ contactStatus.className='contact-status ok'; contactStatus.textContent='Sent — thank you.'; }
+            setTimeout(closeContact, 1200);
+          } else {
+            var err=(res.j && (res.j.message||res.j.error)) || 'Could not send. Try again.';
+            if(contactStatus){ contactStatus.className='contact-status err'; contactStatus.textContent=err; }
+          }
+        })
+        .catch(function(){ if(contactStatus){ contactStatus.className='contact-status err'; contactStatus.textContent='Network error — try again.'; } })
+        .finally(function(){ if(contactSubmit) contactSubmit.disabled=false; });
+    });
+  }
+/* /Contact JS */
+
 
 });
 </script>
