@@ -128,9 +128,9 @@ body.show-aseret .intro{margin-top:12px}
 .foot{flex-wrap:wrap;gap:10px 18px}
 .foot-link{background:none;border:none;padding:0;font:inherit;font-size:8pt;letter-spacing:.06em;color:var(--clay);cursor:pointer;text-decoration:underline;text-underline-offset:3px;-webkit-tap-highlight-color:transparent}
 .foot-link:hover{color:var(--charcoal)}
-.dedication{margin:0 16px 28px;padding:0 8px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:11pt;font-style:italic;font-weight:300;line-height:1.45;color:var(--warm-gray)}
-body.hide-en .dedication{display:none}
-@media print{body.hide-en .dedication{display:unset !important}}
+.dedication{margin:0 16px 28px;padding:0 8px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:11pt;font-style:italic;font-weight:300;line-height:1.55;color:var(--warm-gray)}.dedication-he{display:inline-block;margin-top:4px;font-family:"Times New Roman","Arial Hebrew",serif;font-style:normal;font-size:12pt;letter-spacing:.02em;color:var(--graphite)}
+body.hide-en .dedication-en{display:none}
+@media print{body.hide-en .dedication-en{display:unset !important}}
 .contact-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
 .contact-panel[hidden]{display:none !important}
 .contact-panel-inner{width:100%;max-width:420px;max-height:min(78vh,640px);overflow:auto;background:var(--parchment);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid var(--rule)}
@@ -974,7 +974,7 @@ May our prayers ascend before the Throne of Glory, and may we be inscribed and s
 <span>Seder HaSelichot &middot; Sephardic Rite</span>
 <button type="button" class="foot-link" id="contact-open">Contact · Feedback</button>
 </div>
-<p class="dedication">Created by Nathan Oiknine in honor of Sofia bat Natalia</p>
+<p class="dedication"><span class="dedication-en">Created by Nathan Oiknine in memory of Sofia bat Natalia</span><br><span class="dedication-he" dir="rtl" lang="he">לעילוי נשמת סופיה בת נטליה ע״ה · י״ז בשבט תשפ״ה</span></p>
 </div>
 
 
