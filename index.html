@@ -107,6 +107,28 @@ body.show-aseret .intro{margin-top:12px}
 }
 
 
+
+/* Search */
+.search-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
+.search-panel[hidden]{display:none !important}
+.search-panel-inner{width:100%;max-width:420px;max-height:min(78vh,640px);display:flex;flex-direction:column;background:var(--parchment);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid var(--rule);overflow:hidden}
+.search-head{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--rule);background:var(--parchment);flex-shrink:0}
+.search-title{font-family:'Cormorant Garamond',serif;font-size:14pt;font-weight:500;letter-spacing:.06em;color:var(--charcoal);white-space:nowrap}
+.search-close{width:36px;height:36px;border:none;background:transparent;font-size:24px;line-height:1;color:var(--warm-gray);cursor:pointer;margin-left:auto}
+.search-field{padding:12px 16px;border-bottom:1px solid var(--rule);flex-shrink:0}
+.search-field input{width:100%;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;font-size:16px;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--stone);color:var(--charcoal);outline:none}
+.search-field input:focus{border-color:var(--clay)}
+.search-meta{font-size:8pt;letter-spacing:.06em;text-transform:uppercase;color:var(--warm-gray);padding:8px 16px 0;flex-shrink:0}
+.search-results{overflow:auto;padding:6px 0 12px;-webkit-overflow-scrolling:touch}
+.search-hit{display:block;width:100%;text-align:left;padding:10px 16px;border:none;border-bottom:.5px solid var(--faint);background:transparent;cursor:pointer;font:inherit;color:inherit}
+.search-hit:active,.search-hit:hover{background:var(--linen)}
+.search-hit-sec{font-size:8pt;letter-spacing:.06em;color:var(--warm-gray);margin-bottom:2px}
+.search-hit-title{font-size:11pt;color:var(--charcoal);margin-bottom:4px}
+.search-hit-snip{font-size:10pt;color:var(--graphite);line-height:1.4;direction:auto}
+.search-hit-snip mark,.search-mark{background:rgba(176,112,80,.28);color:inherit;border-radius:2px;padding:0 1px}
+.search-empty{padding:24px 16px;text-align:center;color:var(--warm-gray);font-size:11pt}
+@media print{.search-panel,#search-toggle{display:none !important}}
+
 /* TOC */
 .toc-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
 .toc-panel[hidden]{display:none !important}
@@ -178,6 +200,7 @@ the Thirteen Attributes of Compassion, the merit of the Patriarchs, and heartfel
 </div>
 <div class="mode-bar">
 <button type="button" id="aseret-toggle" aria-pressed="false">עשי״ת · 10 Days</button>
+<button type="button" id="search-toggle" aria-expanded="false" aria-controls="search-panel">Search · חיפוש</button>
 <button type="button" id="toc-toggle" aria-expanded="false" aria-controls="toc-panel">Index · תוכן</button>
 </div>
 
@@ -1088,6 +1111,17 @@ May our prayers ascend before the Throne of Glory, and may we be inscribed and s
 </nav>
 </div>
 </div>
+
+<!-- Search -->
+<div id="search-panel" class="search-panel" hidden>
+<div class="search-panel-inner">
+<div class="search-head"><span class="search-title">Search · חיפוש</span><button type="button" class="search-close" id="search-close" aria-label="Close">×</button></div>
+<div class="search-field"><input type="search" id="search-input" placeholder="Hebrew, English, or transliteration…" autocomplete="off" enterkeyhint="search" /></div>
+<div class="search-meta" id="search-meta"></div>
+<div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
+</div>
+</div>
+
 <!-- /TOC -->
 
 <!-- Contact -->
@@ -1199,6 +1233,213 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeToc(); });
 /* /TOC JS */
+
+/* Search JS */
+  var searchPanel=document.getElementById('search-panel');
+  var searchBtn=document.getElementById('search-toggle');
+  var searchClose=document.getElementById('search-close');
+  var searchInput=document.getElementById('search-input');
+  var searchResults=document.getElementById('search-results');
+  var searchMeta=document.getElementById('search-meta');
+  var searchIndex=null;
+  var searchTimer=null;
+  var lastMarks=[];
+
+  function stripNikud(s){
+    return (s||'').replace(/[\u0591-\u05C7]/g,'');
+  }
+  function norm(s){
+    return stripNikud(s).toLowerCase().replace(/\s+/g,' ').trim();
+  }
+  function clearMarks(){
+    for(var i=0;i<lastMarks.length;i++){
+      var el=lastMarks[i];
+      if(el && el.classList) el.classList.remove('search-mark');
+    }
+    lastMarks=[];
+  }
+  function buildSearchIndex(){
+    var items=[];
+    var dividers=document.querySelectorAll('.divider[id^="section-"]');
+    for(var d=0;d<dividers.length;d++){
+      var div=dividers[d];
+      var secId=div.id;
+      var numEl=div.querySelector('.sec-num');
+      var heEl=div.querySelector('.he');
+      var enEl=div.querySelector('.en');
+      var num=numEl?numEl.textContent.trim():'';
+      var heTitle=heEl?heEl.textContent.trim():'';
+      var enTitle=enEl?enEl.textContent.trim():'';
+      var titleText=heTitle+' '+enTitle;
+      items.push({
+        el:div,
+        secId:secId,
+        num:num,
+        title:enTitle||heTitle,
+        heTitle:heTitle,
+        kind:'section',
+        text:titleText,
+        norm:norm(titleText)
+      });
+      var node=div.nextElementSibling;
+      while(node && !(node.classList && node.classList.contains('divider'))){
+        if(node.classList && node.classList.contains('verses')){
+          var vs=node.querySelectorAll(':scope > .v');
+          for(var v=0;v<vs.length;v++){
+            var verse=vs[v];
+            var parts=[];
+            var cols=verse.querySelectorAll('.c');
+            for(var c=0;c<cols.length;c++) parts.push(cols[c].textContent);
+            var raw=parts.join(' · ');
+            if(!raw.trim()) continue;
+            items.push({
+              el:verse,
+              secId:secId,
+              num:num,
+              title:enTitle||heTitle,
+              heTitle:heTitle,
+              kind:'verse',
+              text:raw,
+              norm:norm(raw)
+            });
+          }
+        }
+        node=node.nextElementSibling;
+      }
+    }
+    return items;
+  }
+  function snippet(text, q, radius){
+    radius=radius||42;
+    var ntext=norm(text);
+    var nq=norm(q);
+    var at=ntext.indexOf(nq);
+    if(at<0) return text.slice(0, radius*2)+(text.length>radius*2?'…':'');
+    // approximate by raw index using length ratio — better walk raw with nikud-aware
+    var raw=text.replace(/\s+/g,' ');
+    var map=[];
+    var folded='';
+    for(var i=0;i<raw.length;i++){
+      var ch=raw[i];
+      if(/[\u0591-\u05C7]/.test(ch)) continue;
+      folded+=ch.toLowerCase();
+      map.push(i);
+    }
+    var fq=norm(q);
+    var fi=folded.indexOf(fq);
+    if(fi<0) return raw.slice(0, radius*2)+(raw.length>radius*2?'…':'');
+    var start=map[fi];
+    var end=map[Math.min(fi+fq.length-1, map.length-1)]+1;
+    var a=Math.max(0, start-radius);
+    var b=Math.min(raw.length, end+radius);
+    var snip=(a>0?'…':'')+raw.slice(a,b)+(b<raw.length?'…':'');
+    var mid=raw.slice(start,end);
+    return snip.replace(mid, '<mark>'+mid+'</mark>');
+  }
+  function renderResults(q){
+    if(!searchResults) return;
+    clearMarks();
+    q=(q||'').trim();
+    if(!q){
+      searchResults.innerHTML='<div class="search-empty">Type to search the seder…</div>';
+      if(searchMeta) searchMeta.textContent='';
+      return;
+    }
+    if(!searchIndex) searchIndex=buildSearchIndex();
+    var nq=norm(q);
+    if(nq.length<1){
+      searchResults.innerHTML='<div class="search-empty">Type to search the seder…</div>';
+      if(searchMeta) searchMeta.textContent='';
+      return;
+    }
+    var hits=[];
+    for(var i=0;i<searchIndex.length;i++){
+      var it=searchIndex[i];
+      if(it.norm.indexOf(nq)>=0) hits.push(it);
+      if(hits.length>=60) break;
+    }
+    if(searchMeta) searchMeta.textContent=hits.length+(hits.length===60?'+':'')+' result'+(hits.length===1?'':'s');
+    if(!hits.length){
+      searchResults.innerHTML='<div class="search-empty">No matches</div>';
+      return;
+    }
+    var html='';
+    for(var h=0;h<hits.length;h++){
+      var hit=hits[h];
+      var label=hit.kind==='section'?'Section':'In section';
+      html+='<button type="button" class="search-hit" data-idx="'+h+'">'
+        +'<div class="search-hit-sec">'+label+' '+hit.num+(hit.kind==='section'?'':' · verse')+'</div>'
+        +'<div class="search-hit-title">'+(hit.heTitle?hit.heTitle+' · ':'')+hit.title+'</div>'
+        +'<div class="search-hit-snip">'+snippet(hit.text,q)+'</div>'
+        +'</button>';
+    }
+    searchResults.innerHTML=html;
+    searchResults._hits=hits;
+  }
+  function openSearch(){
+    if(!searchPanel) return;
+    if(tocPanel && !tocPanel.hidden) closeToc();
+    searchPanel.hidden=false;
+    if(searchBtn) searchBtn.setAttribute('aria-expanded','true');
+    document.body.style.overflow='hidden';
+    if(!searchIndex) searchIndex=buildSearchIndex();
+    renderResults(searchInput?searchInput.value:'');
+    if(searchInput) setTimeout(function(){ searchInput.focus(); searchInput.select(); },40);
+  }
+  function closeSearch(){
+    if(!searchPanel) return;
+    searchPanel.hidden=true;
+    if(searchBtn) searchBtn.setAttribute('aria-expanded','false');
+    if(tocPanel && tocPanel.hidden && (!contactPanel || contactPanel.hidden)) document.body.style.overflow='';
+    clearMarks();
+  }
+  function goToHit(hit){
+    closeSearch();
+    if(!hit||!hit.el) return;
+    // reveal aseret parent if needed
+    var el=hit.el;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.classList.add('search-mark');
+    lastMarks=[el];
+    setTimeout(function(){ clearMarks(); }, 3500);
+  }
+  if(searchBtn) searchBtn.addEventListener('click', function(e){ e.preventDefault(); if(searchPanel && searchPanel.hidden) openSearch(); else closeSearch(); });
+  if(searchClose) searchClose.addEventListener('click', function(e){ e.preventDefault(); closeSearch(); });
+  if(searchPanel){
+    searchPanel.addEventListener('click', function(e){ if(e.target===searchPanel) closeSearch(); });
+  }
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      clearTimeout(searchTimer);
+      var v=searchInput.value;
+      searchTimer=setTimeout(function(){ renderResults(v); }, 120);
+    });
+    searchInput.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){
+        e.preventDefault();
+        var hits=searchResults && searchResults._hits;
+        if(hits && hits.length) goToHit(hits[0]);
+      }
+    });
+  }
+  if(searchResults){
+    searchResults.addEventListener('click', function(e){
+      var btn=e.target.closest('.search-hit');
+      if(!btn) return;
+      var idx=parseInt(btn.getAttribute('data-idx'),10);
+      var hits=searchResults._hits||[];
+      if(hits[idx]) goToHit(hits[idx]);
+    });
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && searchPanel && !searchPanel.hidden) closeSearch();
+    if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){
+      e.preventDefault();
+      if(searchPanel && searchPanel.hidden) openSearch(); else closeSearch();
+    }
+  });
+/* /Search JS */
+
 
 /* Contact JS */
   // Web3Forms access key (public by design; routes to inbox without listing an email on the page)
