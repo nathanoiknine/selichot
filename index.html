@@ -146,6 +146,51 @@ body.show-aseret .intro{margin-top:12px}
 @media print{.toc-panel,#toc-toggle,.contact-panel,#contact-toggle{display:none !important}}
 /* /TOC */
 
+
+/* Follow */
+.follow-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
+.follow-panel[hidden]{display:none !important}
+.follow-panel-inner{width:100%;max-width:420px;max-height:min(78vh,640px);display:flex;flex-direction:column;background:var(--parchment);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid var(--rule);overflow:hidden}
+.follow-head{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--rule);background:var(--parchment);flex-shrink:0}
+.follow-title{font-family:'Cormorant Garamond',serif;font-size:14pt;font-weight:500;letter-spacing:.06em;color:var(--charcoal);white-space:nowrap}
+.follow-close{width:36px;height:36px;border:none;background:transparent;font-size:24px;line-height:1;color:var(--warm-gray);cursor:pointer;margin-left:auto}
+.follow-body{padding:14px 16px 18px;overflow:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:14px}
+.follow-honesty{font-family:'Cormorant Garamond',serif;font-size:11pt;font-style:italic;font-weight:300;line-height:1.45;color:var(--graphite);margin:0}
+.follow-start{width:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.04em;padding:14px 16px;border-radius:10px;border:1px solid var(--clay);background:var(--clay);color:var(--parchment);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.follow-start:disabled{opacity:.45;cursor:not-allowed}
+.follow-start:not(:disabled):active{filter:brightness(.95)}
+.follow-label{font-size:8pt;letter-spacing:.06em;text-transform:uppercase;color:var(--warm-gray);margin:0 0 6px}
+.follow-seg{display:flex;gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--stone)}
+.follow-seg label{flex:1;text-align:center;padding:10px 6px;font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.02em;color:var(--warm-gray);cursor:pointer;-webkit-tap-highlight-color:transparent;border-right:1px solid var(--rule)}
+.follow-seg label:last-child{border-right:none}
+.follow-seg input{position:absolute;opacity:0;pointer-events:none}
+.follow-seg label.active,.follow-seg input:checked + span{color:var(--parchment)}
+.follow-seg label.active{background:var(--clay);color:var(--parchment)}
+.follow-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0}
+.follow-toggle-row span{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--charcoal)}
+.follow-switch{position:relative;width:44px;height:26px;flex-shrink:0}
+.follow-switch input{opacity:0;width:0;height:0}
+.follow-switch .track{position:absolute;inset:0;background:var(--rule);border-radius:13px;transition:background .15s;cursor:pointer}
+.follow-switch input:checked + .track{background:var(--clay)}
+.follow-switch .track::after{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:var(--parchment);border-radius:50%;transition:transform .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.follow-switch input:checked + .track::after{transform:translateX(18px)}
+.follow-privacy{font-size:9pt;line-height:1.45;color:var(--warm-gray);margin:0}
+.follow-msg{font-size:10pt;line-height:1.45;color:var(--graphite);margin:0;padding:10px 12px;background:var(--linen);border-radius:8px;border:1px solid var(--faint)}
+.follow-msg[hidden]{display:none !important}
+.follow-pill{position:fixed;top:calc(env(safe-area-inset-top, 8px) + 100px);left:50%;transform:translateX(-50%);z-index:41;display:flex;align-items:center;gap:10px;max-width:min(94vw,440px);padding:8px 10px 8px 14px;background:var(--parchment);border:1px solid var(--rule);border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,.14);font-family:'Inter',system-ui,sans-serif;font-size:12px;color:var(--charcoal);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.follow-pill[hidden]{display:none !important}
+.follow-pill-dot{width:8px;height:8px;border-radius:50%;background:var(--clay);flex-shrink:0;animation:follow-pulse 1.4s ease-in-out infinite}
+.follow-pill.is-paused .follow-pill-dot{animation:none;background:var(--warm-gray)}
+@keyframes follow-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.follow-pill-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;letter-spacing:.02em}
+.follow-pill-stop{flex-shrink:0;font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:16px;border:1px solid var(--rule);background:var(--charcoal);color:var(--parchment);cursor:pointer}
+.v.follow-current,.divider.follow-current{background:rgba(176,112,80,.22);box-shadow:inset 0 0 0 1px rgba(176,112,80,.35);border-radius:6px;transition:background .25s}
+.v.follow-prev,.divider.follow-prev{background:rgba(176,112,80,.08);border-radius:6px;transition:background .4s}
+.v.follow-next{background:rgba(188,170,148,.12);border-radius:6px}
+.v{scroll-margin-top:calc(env(safe-area-inset-top, 8px) + 150px)}
+@media print{.follow-panel,#follow-toggle,#follow-pill{display:none !important}}
+/* /Follow */
+
 /* Contact */
 .foot{flex-wrap:wrap;gap:10px 18px}
 .foot-link{background:none;border:none;padding:0;font:inherit;font-size:8pt;letter-spacing:.06em;color:var(--clay);cursor:pointer;text-decoration:underline;text-underline-offset:3px;-webkit-tap-highlight-color:transparent}
@@ -201,6 +246,7 @@ the Thirteen Attributes of Compassion, the merit of the Patriarchs, and heartfel
 <div class="mode-bar">
 <button type="button" id="aseret-toggle" aria-pressed="false">עשי״ת · 10 Days</button>
 <button type="button" id="search-toggle" aria-expanded="false" aria-controls="search-panel">Search · חיפוש</button>
+<button type="button" id="follow-toggle" aria-expanded="false" aria-controls="follow-panel">Follow · עקיבה</button>
 <button type="button" id="toc-toggle" aria-expanded="false" aria-controls="toc-panel">Index · תוכן</button>
 </div>
 
@@ -1122,6 +1168,40 @@ May our prayers ascend before the Throne of Glory, and may we be inscribed and s
 </div>
 </div>
 
+
+<!-- Follow -->
+<div id="follow-panel" class="follow-panel" hidden>
+<div class="follow-panel-inner">
+<div class="follow-head"><span class="follow-title">Follow · עקיבה</span><button type="button" class="follow-close" id="follow-close" aria-label="Close">×</button></div>
+<div class="follow-body">
+<p class="follow-honesty">Works best for clear spoken sections. Melody and overlapping voices may lose the place.</p>
+<button type="button" class="follow-start" id="follow-start">Start listening / התחל האזנה</button>
+<div>
+<p class="follow-label">Match language</p>
+<div class="follow-seg" role="radiogroup" aria-label="Match language">
+<label class="active"><input type="radio" name="follow-lang" value="auto" checked><span>Auto</span></label>
+<label><input type="radio" name="follow-lang" value="he"><span>Hebrew</span></label>
+<label><input type="radio" name="follow-lang" value="tr"><span>Transliteration</span></label>
+</div>
+</div>
+<div class="follow-toggle-row">
+<span>Auto-scroll</span>
+<label class="follow-switch" title="Auto-scroll"><input type="checkbox" id="follow-autoscroll" checked><span class="track"></span></label>
+</div>
+<p class="follow-privacy">Mic stays on this phone; nothing is uploaded.</p>
+<p class="follow-msg" id="follow-unsupported" hidden>Speech recognition isn’t available in this browser. Try Safari or Chrome on a phone.</p>
+<p class="follow-msg" id="follow-denied" hidden>Microphone access was denied. Enable it for this site in Settings, then try again.</p>
+<p class="follow-msg" id="follow-status" hidden></p>
+</div>
+</div>
+</div>
+<div id="follow-pill" class="follow-pill" hidden>
+<span class="follow-pill-dot" aria-hidden="true"></span>
+<button type="button" class="follow-pill-text" id="follow-pill-text">● Listening</button>
+<button type="button" class="follow-pill-stop" id="follow-pill-stop">Stop</button>
+</div>
+<!-- /Follow -->
+
 <!-- /TOC -->
 
 <!-- Contact -->
@@ -1379,6 +1459,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function openSearch(){
     if(!searchPanel) return;
     if(tocPanel && !tocPanel.hidden) closeToc();
+    if(typeof closeFollow==='function' && followPanel && !followPanel.hidden) closeFollow();
     searchPanel.hidden=false;
     if(searchBtn) searchBtn.setAttribute('aria-expanded','true');
     document.body.style.overflow='hidden';
@@ -1439,6 +1520,391 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   });
 /* /Search JS */
+
+
+
+/* Follow JS */
+  // Web Speech API: Safari often ends continuous recognition; we restart onend while armed.
+  // Hebrew ASR quality varies; melody / overlapping voices often confuse matching.
+  var followPanel=document.getElementById('follow-panel');
+  var followBtn=document.getElementById('follow-toggle');
+  var followClose=document.getElementById('follow-close');
+  var followStart=document.getElementById('follow-start');
+  var followPill=document.getElementById('follow-pill');
+  var followPillText=document.getElementById('follow-pill-text');
+  var followPillStop=document.getElementById('follow-pill-stop');
+  var followAutoscroll=document.getElementById('follow-autoscroll');
+  var followUnsupported=document.getElementById('follow-unsupported');
+  var followDenied=document.getElementById('follow-denied');
+  var followStatus=document.getElementById('follow-status');
+  var SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var followIndex=null;
+  var followRec=null;
+  var followArmed=false;
+  var followPaused=false;
+  var followIdx=-1;
+  var followWindow='';
+  var followLastMatchAt=0;
+  var followLostTimer=null;
+  var followWantRestart=false;
+  var followLangMode='auto';
+
+  function followStripNikud(s){ return (s||'').replace(/[\u0591-\u05C7]/g,''); }
+  function followNormHe(s){ return followStripNikud(s).replace(/[^\u05D0-\u05EA\s]/g,'').replace(/\s+/g,' ').trim(); }
+  function followNormLat(s){ return (s||'').toLowerCase().replace(/[''`´]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
+  function followNormAny(s){ return followStripNikud(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+
+  function buildFollowIndex(){
+    var items=[];
+    var dividers=document.querySelectorAll('.divider[id^="section-"]');
+    for(var d=0;d<dividers.length;d++){
+      var div=dividers[d];
+      var secId=div.id;
+      var numEl=div.querySelector('.sec-num');
+      var heEl=div.querySelector('.he');
+      var enEl=div.querySelector('.en');
+      var num=numEl?numEl.textContent.trim():'';
+      var heTitle=heEl?heEl.textContent.trim():'';
+      var enTitle=enEl?enEl.textContent.trim():'';
+      items.push({
+        el:div, secId:secId, num:num, title:enTitle||heTitle, kind:'section',
+        he:followNormHe(heTitle), tr:followNormLat(enTitle), en:followNormLat(enTitle),
+        any:followNormAny(heTitle+' '+enTitle)
+      });
+      var node=div.nextElementSibling;
+      while(node && !(node.classList && node.classList.contains('divider'))){
+        if(node.classList && node.classList.contains('verses')){
+          var vs=node.querySelectorAll(':scope > .v');
+          for(var v=0;v<vs.length;v++){
+            var verse=vs[v];
+            var heC=verse.querySelector('.c.he');
+            var trC=verse.querySelector('.c.tr');
+            var enC=verse.querySelector('.c.en');
+            var heT=heC?heC.textContent:'';
+            var trT=trC?trC.textContent:'';
+            var enT=enC?enC.textContent:'';
+            items.push({
+              el:verse, secId:secId, num:num, title:enTitle||heTitle, kind:'verse',
+              he:followNormHe(heT), tr:followNormLat(trT), en:followNormLat(enT),
+              any:followNormAny(heT+' '+trT+' '+enT)
+            });
+          }
+        }
+        node=node.nextElementSibling;
+      }
+    }
+    return items;
+  }
+
+  function followTokenScore(hay, needle){
+    if(!hay||!needle||needle.length<2) return 0;
+    if(hay.indexOf(needle)>=0) return Math.min(1, 0.55 + needle.length/80);
+    var tokens=needle.split(' ').filter(function(t){ return t.length>=3; });
+    if(!tokens.length) return 0;
+    var hit=0;
+    for(var i=0;i<tokens.length;i++){ if(hay.indexOf(tokens[i])>=0) hit++; }
+    var ratio=hit/tokens.length;
+    if(ratio<0.35) return 0;
+    return ratio*0.85;
+  }
+
+  function followScoreItem(it, win, mode){
+    var s=0;
+    if(mode==='he') s=followTokenScore(it.he, followNormHe(win));
+    else if(mode==='tr') s=Math.max(followTokenScore(it.tr, followNormLat(win)), followTokenScore(it.en, followNormLat(win)));
+    else {
+      s=Math.max(
+        followTokenScore(it.he, followNormHe(win)),
+        followTokenScore(it.tr, followNormLat(win)),
+        followTokenScore(it.any, followNormAny(win))
+      );
+    }
+    return s;
+  }
+
+  function followFindMatch(win){
+    if(!followIndex||!win||win.length<4) return null;
+    var mode=followLangMode||'auto';
+    var bestI=-1, bestS=0;
+    var start=Math.max(0, followIdx);
+    // Prefer forward / nearby
+    for(var i=0;i<followIndex.length;i++){
+      var score=followScoreItem(followIndex[i], win, mode);
+      if(score<=0) continue;
+      var dist=i-followIdx;
+      if(followIdx>=0){
+        if(dist>=0 && dist<=12) score+=0.12;
+        else if(dist>12 && dist<=40) score+=0.04;
+        else if(dist<0){
+          if(score < bestS + 0.25) continue; // only jump back if much better
+          score-=0.08;
+        }
+      }
+      if(score>bestS){ bestS=score; bestI=i; }
+    }
+    if(bestI<0 || bestS<0.42) return null;
+    return {idx:bestI, score:bestS};
+  }
+
+  function followClearHL(){
+    document.querySelectorAll('.follow-current,.follow-prev,.follow-next').forEach(function(el){
+      el.classList.remove('follow-current','follow-prev','follow-next');
+    });
+  }
+
+  function followSetPlace(idx, opts){
+    opts=opts||{};
+    if(!followIndex||idx<0||idx>=followIndex.length) return;
+    if(idx===followIdx && !opts.force) return;
+    var prev=followIdx>=0?followIndex[followIdx]:null;
+    followClearHL();
+    followIdx=idx;
+    var cur=followIndex[idx];
+    if(prev && prev.el && prev.el!==cur.el) prev.el.classList.add('follow-prev');
+    cur.el.classList.add('follow-current');
+    // next verse sibling preference
+    var nextEl=null;
+    if(cur.kind==='verse' && cur.el.nextElementSibling && cur.el.nextElementSibling.classList.contains('v')){
+      nextEl=cur.el.nextElementSibling;
+    } else if(idx+1<followIndex.length){
+      nextEl=followIndex[idx+1].el;
+    }
+    if(nextEl && nextEl!==cur.el) nextEl.classList.add('follow-next');
+    followLastMatchAt=Date.now();
+    followPaused=false;
+    if(followPill) followPill.classList.remove('is-paused');
+    updateFollowPill();
+    if(opts.scroll!==false && followAutoscroll && followAutoscroll.checked){
+      try{ cur.el.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){}
+    }
+    resetFollowLostTimer();
+  }
+
+  function updateFollowPill(){
+    if(!followPillText) return;
+    var label=followPaused?'Paused':'Listening';
+    var place='';
+    if(followIdx>=0 && followIndex && followIndex[followIdx]){
+      var it=followIndex[followIdx];
+      place=' · §'+it.num+' '+it.title;
+    }
+    followPillText.textContent='● '+label+place;
+  }
+
+  function resetFollowLostTimer(){
+    if(followLostTimer) clearTimeout(followLostTimer);
+    followLostTimer=setTimeout(function(){
+      if(!followArmed) return;
+      followPaused=true;
+      if(followPill) followPill.classList.add('is-paused');
+      updateFollowPill();
+      if(followStatus){
+        followStatus.hidden=false;
+        followStatus.textContent='Lost the place — tap a verse to re-anchor, or resume from the pill.';
+      }
+    }, 8000);
+  }
+
+  function syncFollowSeg(){
+    var radios=document.querySelectorAll('input[name="follow-lang"]');
+    for(var i=0;i<radios.length;i++){
+      var lab=radios[i].closest('label');
+      if(lab) lab.classList.toggle('active', radios[i].checked);
+      if(radios[i].checked) followLangMode=radios[i].value;
+    }
+  }
+
+  function openFollow(){
+    if(!followPanel) return;
+    if(typeof closeSearch==='function' && searchPanel && !searchPanel.hidden) closeSearch();
+    if(typeof closeToc==='function' && tocPanel && !tocPanel.hidden) closeToc();
+    if(typeof closeContact==='function' && contactPanel && !contactPanel.hidden) closeContact();
+    followPanel.hidden=false;
+    if(followBtn){ followBtn.setAttribute('aria-expanded','true'); followBtn.classList.add('active'); }
+    document.body.style.overflow='hidden';
+    if(!SpeechRec){
+      if(followStart) followStart.disabled=true;
+      if(followUnsupported) followUnsupported.hidden=false;
+    } else {
+      if(followUnsupported) followUnsupported.hidden=true;
+      if(followStart && !followArmed) followStart.disabled=false;
+    }
+    if(followArmed && followStart){
+      followStart.textContent=followPaused?'Resume listening / המשך האזנה':'Listening… / מאזין';
+      followStart.disabled=followPaused?false:true;
+    }
+    syncFollowSeg();
+  }
+  function closeFollow(){
+    if(!followPanel) return;
+    followPanel.hidden=true;
+    if(followBtn){ followBtn.setAttribute('aria-expanded','false'); if(!followArmed) followBtn.classList.remove('active'); }
+    if(tocPanel && tocPanel.hidden && (!searchPanel||searchPanel.hidden) && (!contactPanel||contactPanel.hidden)) document.body.style.overflow='';
+  }
+
+  function followShowPill(on){
+    if(!followPill) return;
+    followPill.hidden=!on;
+  }
+
+  function stopFollow(){
+    followArmed=false;
+    followWantRestart=false;
+    followPaused=false;
+    if(followLostTimer){ clearTimeout(followLostTimer); followLostTimer=null; }
+    try{ if(followRec){ followRec.onend=null; followRec.onerror=null; followRec.onresult=null; followRec.stop(); } }catch(e){}
+    followRec=null;
+    followWindow='';
+    followShowPill(false);
+    followClearHL();
+    followIdx=-1;
+    if(followBtn) followBtn.classList.remove('active');
+    if(followStart){ followStart.disabled=!SpeechRec; followStart.textContent='Start listening / התחל האזנה'; }
+    if(followStatus){ followStatus.hidden=true; followStatus.textContent=''; }
+    if(followDenied) followDenied.hidden=true;
+  }
+
+  function followLangCode(){
+    if(followLangMode==='tr') return 'en-US';
+    return 'he-IL'; // auto + hebrew
+  }
+
+
+  function bindFollowHandlers(rec){
+    rec.onresult=function(ev){
+      if(!followArmed) return;
+      var chunk='';
+      for(var i=ev.resultIndex;i<ev.results.length;i++){
+        chunk+=ev.results[i][0].transcript+' ';
+      }
+      chunk=chunk.trim();
+      if(!chunk) return;
+      followWindow=(followWindow+' '+chunk).slice(-160);
+      var m=followFindMatch(followWindow);
+      if(m && m.idx!==followIdx){
+        followSetPlace(m.idx);
+      } else if(m){
+        followLastMatchAt=Date.now();
+        resetFollowLostTimer();
+        if(followPaused){ followPaused=false; if(followPill) followPill.classList.remove('is-paused'); updateFollowPill(); }
+      }
+    };
+    rec.onerror=function(ev){
+      var err=ev&&ev.error;
+      if(err==='not-allowed'||err==='service-not-allowed'){
+        followArmed=false;
+        followWantRestart=false;
+        followShowPill(false);
+        if(followDenied) followDenied.hidden=false;
+        if(followStart){ followStart.disabled=false; followStart.textContent='Start listening / התחל האזנה'; }
+        if(followBtn) followBtn.classList.remove('active');
+        openFollow();
+        return;
+      }
+      // no-speech / aborted: let onend restart
+    };
+    rec.onend=function(){
+      // Safari often ends continuous sessions; restart while armed.
+      if(followArmed && followWantRestart){
+        setTimeout(function(){ if(followArmed && followWantRestart) restartListening(); }, 280);
+      }
+    };
+  }
+  function restartListening(){
+    if(!SpeechRec||!followArmed) return;
+    try{ if(followRec){ followRec.onend=null; followRec.onerror=null; followRec.onresult=null; try{followRec.stop();}catch(e){} } }catch(e){}
+    try{
+      followRec=new SpeechRec();
+      followRec.continuous=true;
+      followRec.interimResults=true;
+      followRec.lang=followLangCode();
+      followRec.maxAlternatives=1;
+      bindFollowHandlers(followRec);
+      followRec.start();
+    }catch(e){ /* ignore transient start races on Safari */ }
+  }
+
+  function startFollowRec(){
+    if(!SpeechRec) return;
+    if(followDenied) followDenied.hidden=true;
+    if(!followIndex) followIndex=buildFollowIndex();
+    followArmed=true;
+    followPaused=false;
+    followWantRestart=true;
+    followLastMatchAt=Date.now();
+    if(followBtn) followBtn.classList.add('active');
+    followShowPill(true);
+    updateFollowPill();
+    resetFollowLostTimer();
+    if(followStart){ followStart.disabled=true; followStart.textContent='Listening… / מאזין'; }
+    if(followStatus){ followStatus.hidden=true; followStatus.textContent=''; }
+    try{
+      restartListening();
+      closeFollow();
+    }catch(e){
+      if(followStatus){ followStatus.hidden=false; followStatus.textContent='Could not start listening. Try Safari or Chrome on a phone.'; }
+      followArmed=false;
+      followWantRestart=false;
+      followShowPill(false);
+    }
+  }
+
+  if(followBtn) followBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    if(followPanel && followPanel.hidden) openFollow(); else closeFollow();
+  });
+  if(followClose) followClose.addEventListener('click', function(e){ e.preventDefault(); closeFollow(); });
+  if(followPanel) followPanel.addEventListener('click', function(e){ if(e.target===followPanel) closeFollow(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && followPanel && !followPanel.hidden) closeFollow();
+  });
+  document.querySelectorAll('input[name="follow-lang"]').forEach(function(r){
+    r.addEventListener('change', function(){
+      syncFollowSeg();
+      if(followArmed){ try{ if(followRec) followRec.stop(); }catch(e){} } // onend restarts with new lang
+    });
+  });
+  if(followStart) followStart.addEventListener('click', function(e){
+    e.preventDefault();
+    if(!SpeechRec) return;
+    if(followArmed && followPaused){
+      followPaused=false;
+      if(followPill) followPill.classList.remove('is-paused');
+      updateFollowPill();
+      resetFollowLostTimer();
+      if(followStatus) followStatus.hidden=true;
+      closeFollow();
+      return;
+    }
+    startFollowRec();
+  });
+  if(followPillText) followPillText.addEventListener('click', function(e){
+    e.preventDefault();
+    openFollow();
+  });
+  if(followPillStop) followPillStop.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    stopFollow();
+  });
+  // Manual re-anchor while follow mode active
+  document.addEventListener('click', function(e){
+    if(!followArmed) return;
+    var v=e.target.closest && e.target.closest('.v');
+    if(!v) return;
+    // ignore clicks inside panels
+    if(e.target.closest('.follow-panel,.search-panel,.toc-panel,.contact-panel,.mode-bar,.toggle-bar,.follow-pill')) return;
+    if(!followIndex) followIndex=buildFollowIndex();
+    for(var i=0;i<followIndex.length;i++){
+      if(followIndex[i].el===v){
+        followSetPlace(i, {force:true});
+        if(followStatus){ followStatus.hidden=false; followStatus.textContent='Re-anchored here. Listening…'; }
+        return;
+      }
+    }
+  });
+  if(!SpeechRec && followStart) followStart.disabled=true;
+/* /Follow JS */
 
 
 /* Contact JS */
