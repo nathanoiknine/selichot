@@ -69,9 +69,23 @@ body.hide-en .divider .en{display:none}
 /* Ten Days of Repentance */
 .aseret-yamim{margin:8px 0;padding:10px 12px;border-left:3px solid var(--clay);border-right:3px solid var(--clay);background:rgba(188,170,148,0.08);border-radius:4px}
 body:not(.show-aseret) .aseret-yamim{display:none !important}
-.mode-bar{position:fixed;top:calc(env(safe-area-inset-top, 8px) + 52px);left:0;right:0;z-index:39;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:6px 16px 10px;pointer-events:none;background:var(--parchment);border-bottom:1px solid var(--rule)}
-.mode-bar button{pointer-events:auto;font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:20px;border:1px solid var(--rule);background:var(--parchment);color:var(--warm-gray);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.mode-bar button.active{background:var(--clay);color:var(--parchment);border-color:var(--clay)}
+.mode-bar{position:fixed;top:calc(env(safe-area-inset-top, 8px) + 52px);left:0;right:0;z-index:39;display:flex;justify-content:center;padding:6px 16px 10px;pointer-events:none;background:var(--parchment);border-bottom:1px solid var(--rule)}
+.mode-bar button{pointer-events:auto;font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:20px;border:1px solid var(--rule);background:var(--parchment);color:var(--warm-gray);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.mode-bar button.active,.mode-bar button[aria-expanded="true"]{background:var(--clay);color:var(--parchment);border-color:var(--clay)}
+/* Menu sheet */
+.menu-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
+.menu-panel[hidden]{display:none !important}
+.menu-panel-inner{width:100%;max-width:420px;max-height:min(78vh,640px);display:flex;flex-direction:column;background:var(--parchment);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid var(--rule);overflow:hidden}
+.menu-head{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--rule);background:var(--parchment);flex-shrink:0}
+.menu-title{font-family:'Cormorant Garamond',serif;font-size:14pt;font-weight:500;letter-spacing:.06em;color:var(--charcoal);white-space:nowrap}
+.menu-close{width:36px;height:36px;border:none;background:transparent;font-size:24px;line-height:1;color:var(--warm-gray);cursor:pointer;margin-left:auto}
+.menu-nav{display:flex;flex-direction:column;padding:4px 0 10px;overflow:auto;-webkit-overflow-scrolling:touch}
+.menu-item{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:16px 18px;border:none;border-bottom:.5px solid var(--faint);background:transparent;font-family:'Inter',system-ui,sans-serif;font-size:15px;font-weight:500;letter-spacing:.02em;color:var(--charcoal);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.menu-item:active{background:var(--linen)}
+.menu-item.active{background:rgba(176,112,80,.14);color:var(--clay)}
+.menu-item-status{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--warm-gray);flex-shrink:0}
+.menu-item.active .menu-item-status{color:var(--clay)}
+@media print{.menu-panel,#menu-toggle{display:none !important}}
 body.show-aseret .intro{margin-top:12px}
 @media print{body:not(.show-aseret) .aseret-yamim{display:none !important}}
 
@@ -92,7 +106,7 @@ body.show-aseret .intro{margin-top:12px}
 @page{size:letter;margin:.5in}
 @media print{
   html,body{background:#fff;padding-top:0}
-  .toggle-bar,#toTop,.toggle-bar button,.back-to-top{display:none !important}
+  .toggle-bar,.mode-bar,#menu-toggle,#menu-panel,#toTop,.toggle-bar button,.back-to-top{display:none !important}
   .page{overflow:visible;max-width:none;box-shadow:none;min-height:0;background:#fff}
   .head{padding:8px 20px 12px !important}
   .head .bH{top:8px !important}
@@ -127,7 +141,7 @@ body.show-aseret .intro{margin-top:12px}
 .search-hit-snip{font-size:10pt;color:var(--graphite);line-height:1.4;direction:auto}
 .search-hit-snip mark,.search-mark{background:rgba(176,112,80,.28);color:inherit;border-radius:2px;padding:0 1px}
 .search-empty{padding:24px 16px;text-align:center;color:var(--warm-gray);font-size:11pt}
-@media print{.search-panel,#search-toggle{display:none !important}}
+@media print{.search-panel,#search-toggle,#menu-toggle,#menu-panel{display:none !important}}
 
 /* TOC */
 .toc-panel{position:fixed;inset:0;z-index:50;background:rgba(42,42,42,.35);display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top, 8px) + 64px) 12px 24px;-webkit-tap-highlight-color:transparent}
@@ -143,7 +157,7 @@ body.show-aseret .intro{margin-top:12px}
 .toc-he{grid-column:2;font-family:"Times New Roman","Arial Hebrew",serif;font-size:14pt;direction:rtl;text-align:right;color:var(--charcoal);line-height:1.25}
 .toc-en{grid-column:2;font-size:10pt;color:var(--warm-gray);letter-spacing:.04em;margin-top:2px}
 .divider{scroll-margin-top:calc(env(safe-area-inset-top, 8px) + 110px)}
-@media print{.toc-panel,#toc-toggle,.contact-panel,#contact-toggle{display:none !important}}
+@media print{.toc-panel,#toc-toggle,.contact-panel,#contact-toggle,#menu-toggle,#menu-panel{display:none !important}}
 /* /TOC */
 
 
@@ -188,7 +202,7 @@ body.show-aseret .intro{margin-top:12px}
 .v.follow-prev,.divider.follow-prev{background:rgba(176,112,80,.08);border-radius:6px;transition:background .4s}
 .v.follow-next{background:rgba(188,170,148,.12);border-radius:6px}
 .v{scroll-margin-top:calc(env(safe-area-inset-top, 8px) + 150px)}
-@media print{.follow-panel,#follow-toggle,#follow-pill{display:none !important}}
+@media print{.follow-panel,#follow-toggle,#follow-pill,#menu-toggle,#menu-panel{display:none !important}}
 /* /Follow */
 
 /* Contact */
@@ -244,10 +258,7 @@ the Thirteen Attributes of Compassion, the merit of the Patriarchs, and heartfel
 <button data-col="en" class="active">English</button>
 </div>
 <div class="mode-bar">
-<button type="button" id="aseret-toggle" aria-pressed="false">עשי״ת · 10 Days</button>
-<button type="button" id="search-toggle" aria-expanded="false" aria-controls="search-panel">Search · חיפוש</button>
-<button type="button" id="follow-toggle" aria-expanded="false" aria-controls="follow-panel">Follow · עקיבה</button>
-<button type="button" id="toc-toggle" aria-expanded="false" aria-controls="toc-panel">Index · תוכן</button>
+<button type="button" id="menu-toggle" aria-expanded="false" aria-controls="menu-panel">Menu · תפריט</button>
 </div>
 
 <div class="divider" id="section-351">
@@ -1130,6 +1141,19 @@ May our prayers ascend before the Throne of Glory, and may we be inscribed and s
 </div>
 
 
+<!-- Menu -->
+<div id="menu-panel" class="menu-panel" hidden>
+<div class="menu-panel-inner">
+<div class="menu-head"><span class="menu-title">Menu · תפריט</span><button type="button" class="menu-close" id="menu-close" aria-label="Close">×</button></div>
+<nav class="menu-nav" aria-label="App menu">
+<button type="button" class="menu-item" id="aseret-toggle" aria-pressed="false">עשי״ת · 10 Days</button>
+<button type="button" class="menu-item" id="search-toggle" aria-expanded="false" aria-controls="search-panel">Search · חיפוש</button>
+<button type="button" class="menu-item" id="follow-toggle" aria-expanded="false" aria-controls="follow-panel"><span>Follow · עקיבה</span><span class="menu-item-status" id="follow-menu-status" hidden>Listening</span></button>
+<button type="button" class="menu-item" id="toc-toggle" aria-expanded="false" aria-controls="toc-panel">Index · תוכן</button>
+</nav>
+</div>
+</div>
+
 <!-- TOC -->
 <div id="toc-panel" class="toc-panel" hidden>
 <div class="toc-panel-inner">
@@ -1314,10 +1338,41 @@ document.addEventListener('DOMContentLoaded',function(){
   },{passive:true});
   btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
 
+/* Menu JS */
+  var menuPanel=document.getElementById('menu-panel');
+  var menuBtn=document.getElementById('menu-toggle');
+  var menuClose=document.getElementById('menu-close');
+  var followMenuStatus=document.getElementById('follow-menu-status');
+  function openMenu(){
+    if(!menuPanel) return;
+    if(typeof closeSearch==='function' && searchPanel && !searchPanel.hidden) closeSearch();
+    if(typeof closeToc==='function' && tocPanel && !tocPanel.hidden) closeToc();
+    if(typeof closeFollow==='function' && followPanel && !followPanel.hidden) closeFollow();
+    if(typeof closeContact==='function' && contactPanel && !contactPanel.hidden) closeContact();
+    if(followMenuStatus){
+      var listening=typeof followArmed!=='undefined' && followArmed;
+      followMenuStatus.hidden=!listening;
+    }
+    menuPanel.hidden=false;
+    if(menuBtn){ menuBtn.setAttribute('aria-expanded','true'); menuBtn.classList.add('active'); }
+    document.body.style.overflow='hidden';
+  }
+  function closeMenu(){
+    if(!menuPanel) return;
+    menuPanel.hidden=true;
+    if(menuBtn){ menuBtn.setAttribute('aria-expanded','false'); menuBtn.classList.remove('active'); }
+    if((!tocPanel||tocPanel.hidden)&&(!searchPanel||searchPanel.hidden)&&(!followPanel||followPanel.hidden)&&(!contactPanel||contactPanel.hidden)) document.body.style.overflow='';
+  }
+  if(menuBtn) menuBtn.addEventListener('click', function(e){ e.preventDefault(); if(menuPanel && menuPanel.hidden) openMenu(); else closeMenu(); });
+  if(menuClose) menuClose.addEventListener('click', function(e){ e.preventDefault(); closeMenu(); });
+  if(menuPanel) menuPanel.addEventListener('click', function(e){ if(e.target===menuPanel) closeMenu(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && menuPanel && !menuPanel.hidden) closeMenu(); });
+/* /Menu JS */
+
 /* TOC JS */
   var tocPanel=document.getElementById('toc-panel');
   var tocBtn=document.getElementById('toc-toggle');
-  function openToc(){ if(!tocPanel) return; tocPanel.hidden=false; if(tocBtn) tocBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+  function openToc(){ if(!tocPanel) return; if(typeof closeMenu==='function') closeMenu(); if(typeof closeSearch==='function' && searchPanel && !searchPanel.hidden) closeSearch(); if(typeof closeFollow==='function' && followPanel && !followPanel.hidden) closeFollow(); tocPanel.hidden=false; if(tocBtn) tocBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
   function closeToc(){ if(!tocPanel) return; tocPanel.hidden=true; if(tocBtn) tocBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
   if(tocBtn){ tocBtn.addEventListener('click', function(e){ e.preventDefault(); if(tocPanel && tocPanel.hidden) openToc(); else closeToc(); }); }
   if(tocPanel){
@@ -1475,6 +1530,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   function openSearch(){
     if(!searchPanel) return;
+    if(typeof closeMenu==='function') closeMenu();
     if(tocPanel && !tocPanel.hidden) closeToc();
     if(typeof closeFollow==='function' && followPanel && !followPanel.hidden) closeFollow();
     searchPanel.hidden=false;
@@ -1733,6 +1789,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function openFollow(){
     if(!followPanel) return;
+    if(typeof closeMenu==='function') closeMenu();
     if(typeof closeSearch==='function' && searchPanel && !searchPanel.hidden) closeSearch();
     if(typeof closeToc==='function' && tocPanel && !tocPanel.hidden) closeToc();
     if(typeof closeContact==='function' && contactPanel && !contactPanel.hidden) closeContact();
@@ -1776,6 +1833,7 @@ document.addEventListener('DOMContentLoaded',function(){
     followClearHL();
     followIdx=-1;
     if(followBtn) followBtn.classList.remove('active');
+    if(followMenuStatus) followMenuStatus.hidden=true;
     if(followStart){ followStart.disabled=!SpeechRec; followStart.textContent='Start listening / התחל האזנה'; }
     if(followStatus){ followStatus.hidden=true; followStatus.textContent=''; }
     if(followDenied) followDenied.hidden=true;
@@ -1850,6 +1908,7 @@ document.addEventListener('DOMContentLoaded',function(){
     followWantRestart=true;
     followLastMatchAt=Date.now();
     if(followBtn) followBtn.classList.add('active');
+    if(followMenuStatus) followMenuStatus.hidden=false;
     followShowPill(true);
     updateFollowPill();
     resetFollowLostTimer();
@@ -1910,7 +1969,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var v=e.target.closest && e.target.closest('.v');
     if(!v) return;
     // ignore clicks inside panels
-    if(e.target.closest('.follow-panel,.search-panel,.toc-panel,.contact-panel,.mode-bar,.toggle-bar,.follow-pill')) return;
+    if(e.target.closest('.follow-panel,.search-panel,.toc-panel,.contact-panel,.menu-panel,.mode-bar,.toggle-bar,.follow-pill')) return;
     if(!followIndex) followIndex=buildFollowIndex();
     for(var i=0;i<followIndex.length;i++){
       if(followIndex[i].el===v){
@@ -1933,7 +1992,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var contactForm=document.getElementById('contact-form');
   var contactStatus=document.getElementById('contact-status');
   var contactSubmit=document.getElementById('contact-submit');
-  function openContact(){ if(!contactPanel) return; contactPanel.hidden=false; document.body.style.overflow='hidden'; var ta=contactForm && contactForm.querySelector('textarea'); if(ta) setTimeout(function(){ta.focus();},50); }
+  function openContact(){ if(!contactPanel) return; if(typeof closeMenu==='function') closeMenu(); if(typeof closeSearch==='function' && searchPanel && !searchPanel.hidden) closeSearch(); if(typeof closeToc==='function' && tocPanel && !tocPanel.hidden) closeToc(); if(typeof closeFollow==='function' && followPanel && !followPanel.hidden) closeFollow(); contactPanel.hidden=false; document.body.style.overflow='hidden'; var ta=contactForm && contactForm.querySelector('textarea'); if(ta) setTimeout(function(){ta.focus();},50); }
   function closeContact(){ if(!contactPanel) return; contactPanel.hidden=true; if(tocPanel && tocPanel.hidden) document.body.style.overflow=''; }
   if(contactOpen) contactOpen.addEventListener('click', function(e){ e.preventDefault(); openContact(); });
   if(contactClose) contactClose.addEventListener('click', function(e){ e.preventDefault(); closeContact(); });
